@@ -134,4 +134,4 @@ data/sources.json  the source registry (review its diff after a run)
 
 ## License
 
-Private. No license has been chosen.
+No license has been chosen yet, so all rights are reserved. You can read the code, but not reuse it.
