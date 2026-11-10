@@ -2,6 +2,7 @@
   "name": "recovery-meeting-agents",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "description": "Agents that build and refresh recovery meeting lists for the directory Homegroups and Regroup share",
   "scripts": {

@@ -134,4 +134,4 @@ data/sources.json  the source registry (review its diff after a run)
 
 ## License
 
-No license has been chosen yet, so all rights are reserved. You can read the code, but not reuse it.
+[MIT](LICENSE)
