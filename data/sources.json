@@ -1,0 +1,43 @@
+[
+  {
+    "id": "aa-san-diego-central-office",
+    "fellowship": "AA",
+    "name": "Alcoholics Anonymous San Diego (Central Office / Intergroup)",
+    "url": "https://aasandiego.org/wp-admin/admin-ajax.php?action=meetings",
+    "kind": "meeting-guide-feed",
+    "region": "San Diego, California",
+    "status": "proposed",
+    "addedBy": "agent",
+    "notes": "Official feed of San Diego Central Office/Intergroup (7075 Mission Gorge Rd Ste B, San Diego CA; [contact removed]; [contact removed]) via aasandiego.org, 12 Step Meeting List plugin. Fetched: JSON array, ~1284 meetings, entity=\"Alcoholics Anonymous San Diego\" matches contact page. Covers San Diego & Imperial County. No BMLT found for San Diego."
+  },
+  {
+    "id": "cr-locator",
+    "fellowship": "CELEBRATE_RECOVERY",
+    "name": "Celebrate Recovery locator",
+    "url": "https://crlocator.com/",
+    "kind": "html-pages",
+    "status": "proposed",
+    "addedBy": "seed",
+    "notes": "The official locator since locator.crgroups.info's certificate expired. Its page loads reCAPTCHA and may need JavaScript; report it as blocked rather than working around that."
+  },
+  {
+    "id": "na-bmlt-aggregator",
+    "fellowship": "NA",
+    "name": "BMLT aggregator",
+    "url": "https://aggregator.bmltenabled.org/main_server/",
+    "kind": "bmlt-aggregator",
+    "status": "approved",
+    "addedBy": "seed",
+    "notes": "NA's own service-body data, with 44 regional servers. recovery-api's sync:na covers the same data nationally; collect one region at a time."
+  },
+  {
+    "id": "smart-recovery-usa",
+    "fellowship": "SMART_RECOVERY",
+    "name": "SMART Recovery USA meeting finder",
+    "url": "https://meetings.smartrecovery.org/meetings/",
+    "kind": "html-pages",
+    "status": "proposed",
+    "addedBy": "seed",
+    "notes": "Official finder. Its robots.txt disallows the verification and change paths."
+  }
+]
