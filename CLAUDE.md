@@ -9,15 +9,17 @@ pnpm test                # unit and wiring tests (no network, no model calls)
 pnpm test:emulator       # publisher against a throwaway Firestore emulator
 pnpm typecheck
 pnpm start roles         # the team
-pnpm start sources [--approve <id>] [--reject <id>]
-pnpm start run --fellowship AA,NA --region "Travis County, Texas" [--max-budget-usd 5]
+pnpm start sources [--approve <id> --url <its exact url>] [--reject <id>]
+pnpm start run --fellowship AA,NA --region "Travis County, Texas" [--max-budget-usd 5] [--max-minutes 30]
 pnpm start status --run <id>
-pnpm start publish --run <id> [--apply] [--allow-deletes]   # dry run unless --apply
+pnpm start publish --run <id> [--apply] [--allow-deletes] [--max-writes 5000]   # dry run unless --apply
 ```
 
 Env: Claude credentials (`ANTHROPIC_API_KEY` or a stored login) for `run`; Google Application Default Credentials for `publish`; optional `CRAWLER_CONTACT_URL` for the crawler's user agent.
 
 ## How a run works
+
+Source layout and the role/model table are in `README.md`.
 
 1. `run` starts the Coordinator, which delegates to `source-scout`, `feed-collector`, `page-extractor` and `meeting-verifier` (`src/agents/<role>/`). Everything they find goes to `runs/<id>/` (gitignored). Scouts can add proposed sources to `data/sources.json`, so review that diff.
 2. `publish` is separate code that agents can't reach. It applies the gates, geocodes, compares with the directory and writes `directoryMeetings` only with `--apply`.
@@ -55,7 +57,8 @@ The publisher writes only `directoryMeetings`, which both apps read through `fin
 
 - `src/domain/identity.ts` is an unmodified copy of `recovery-api/src/lib/meetings/identity.ts`, because ids must match exactly. Its only addition is a `// @ts-nocheck` first line, since this repo's `noUncheckedIndexedAccess` rejects upstream's code; keep it when you copy again. `identity.contract.test.ts` fails when `origin/main` changes: copy it again and update any mapper it affects. Don't let a formatter or an edit change what it says.
 - `src/feeds/bmlt.ts` follows `recovery-api/src/lib/meetings/sources/bmlt.ts`, and `src/feeds/meetingGuideFeed.ts` follows `sources/meetingGuide.ts`.
-- recovery-api's `npm run sync:na` owns national NA, and PR #205's `sync:meetings` would own national AA (not merged as of 2026-11-08). Rows they own are left alone here, so agents fill gaps around them. Homegroups reads AA from the directory only once PR #203 merges.
+- recovery-api's `npm run sync:na` owns national NA (BMLT), and `npm run sync:meetings` (#205, merged 2026-11-09) owns national AA from the Meeting Guide API. Rows they own are left alone here, so agents fill gaps around them. Since #203, Homegroups reads AA from the directory.
+- Since #207, `directoryMeetings.day` is a name. Don't `publish --apply` until both products' functions are deployed with #207, or the apps show these meetings with no day (`docs/launch-readiness/directory-seed-runbook.md` upstream).
 - recovery-api's prune can delete this repo's AA and CR rows: it removes any `source: 'external'` row not seen for 30 days once a full sweep is healthy. Republish within that window. Its syncs can also merge into a row of ours with the same id, which keeps `ingestedBy`, so a later `--allow-deletes` here could remove a row the national sync still lists until its next run.
 - `FELLOWSHIPS[...].inApps` is false for anything but AA, NA and Celebrate Recovery, because Homegroups filters to those three and Regroup has no mapping for others. Those meetings are collected and held. Set `inApps` only after the apps change.
 
